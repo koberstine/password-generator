@@ -14,23 +14,26 @@ var symbolCheck = false;
 var newPassword = "";
 var identifyer = 0;
 var passwordText = document.querySelector("#password");
+var password = "";
 
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
-
+  passwordText.value = "";
+  password = generatePassword();
   passwordText.value = password;
 };
 
 function generatePassword() {
-  passwordText.value = ""
+  enteredInputLength ="";
+  userInputLength = 0;
   do {
     enteredInputLength = prompt("How many characters should the password be?", "8 to 128")
     userInputLength = (parseInt(enteredInputLength));
     // Sanity check on user input for password length
     if (isNaN(userInputLength)) {
       alert("Please enter a number");
+      passwordLength = 0;
     } else if (enteredInputLength != userInputLength) {
       alert("Please enter an integer"); 
     } else if (userInputLength < 8) {
@@ -38,7 +41,7 @@ function generatePassword() {
     } else if (userInputLength > 128) {
       alert("Please enter a number that is no more than 128");
     } else passwordLength = userInputLength;
-  } while (passwordLength < 1);
+  } while (passwordLength < 8);
 
   // User prmpted for character types
   do {
@@ -53,14 +56,23 @@ function generatePassword() {
   if (lowerCheck === true) {
     var initialArray = lowerCase;
   } else var initialArray = "";
-  if (upperCheck === true) {
+
+  if (upperCheck === true && initialArray != "") {
     var secondStep = initialArray.concat(upperCase);
+  } else if (upperCheck === true) { 
+    var secondStep = upperCase; 
   } else var secondStep = initialArray;
-  if (numberCheck === true) {
+
+  if (numberCheck === true && secondStep != "") {
     var thirdStep = secondStep.concat(number)
+  } else if (numberCheck === true) { 
+    var thirdStep = number; 
   } else var thirdStep = secondStep;
-  if (symbolCheck === true) {
+
+  if (symbolCheck === true && thirdStep != "") {
     var passwordArray = thirdStep.concat(symbol);
+  }else if (symbolCheck === true) {
+    var passwordArray = symbol;
   } else var passwordArray = thirdStep;
 
   for (var i = 0; i < passwordLength; i++) {
